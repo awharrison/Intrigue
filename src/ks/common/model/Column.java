@@ -79,4 +79,8 @@ public String toString() {
 	sb.append ("]");
 	return sb.toString();
 }
+public Column getModelElement() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
