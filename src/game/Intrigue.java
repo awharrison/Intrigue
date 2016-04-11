@@ -2,9 +2,8 @@ package game;
 
 import java.awt.Dimension;
 
-import awh.control.IntrigueTableauToDownController;
-import awh.control.IntrigueTableauToUpController;
-import awh.control.testController;
+import awh.control.IntrigueDownPileController;
+import awh.control.IntrigueTableauController;
 import ks.client.gamefactory.GameWindow;
 import ks.common.games.Solitaire;
 import ks.common.model.Card;
@@ -72,7 +71,6 @@ public class Intrigue extends Solitaire {
 		
 		
 		// draw cards from the deck until all bases are set
-		
 		while(true) {
 			Card temp = multideck.get();
 			switch(temp.getRank()) {
@@ -126,12 +124,15 @@ public class Intrigue extends Solitaire {
 	private void initializeControllers() {
 		// initialize adapters for each tableau column
 		for (int i = 0; i < MAX; i++) {
-			tableauView[i].setMouseAdapter(new testController (this, tableauView[i]));
+			tableauView[i].setMouseAdapter(new IntrigueTableauController (this, tableauView[i]));
 		}
 		
 		// initialize adapters for each upPile
 		
 		// initialize adapters for each downPile
+		for (int i = 0; i < MAX; i++) {
+			downPileView[i].setMouseAdapter(new IntrigueDownPileController (this, downPileView[i]));
+		}
 		
 		// initialize adapters for updating the number of cards left and the score
 	}

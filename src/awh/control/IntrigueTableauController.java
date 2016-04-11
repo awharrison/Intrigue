@@ -2,25 +2,19 @@ package awh.control;
 
 import game.Intrigue;
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import awh.move.MoveCardDownPile;
 import ks.common.controller.SolitaireReleasedAdapter;
-import ks.common.model.Card;
 import ks.common.model.Column;
-import ks.common.model.Move;
-import ks.common.model.Pile;
 import ks.common.view.CardView;
 import ks.common.view.ColumnView;
 import ks.common.view.Container;
 import ks.common.view.Widget;
 
-public class testController extends SolitaireReleasedAdapter {
+public class IntrigueTableauController extends SolitaireReleasedAdapter {
 	
 	ColumnView view;
 	
-	public testController(Intrigue g, ColumnView v) {
+	public IntrigueTableauController(Intrigue g, ColumnView v) {
 		super(g);
 		this.view = v;
 	}
@@ -70,47 +64,4 @@ public class testController extends SolitaireReleasedAdapter {
 		// card beneath it.  A bit tricky and I like it!
 		view.redraw();
 	}
-	
-	public void MouseReleased(MouseEvent e) {
-		Container c = theGame.getContainer();
-
-		/** Return if there is no card being dragged chosen. */
-		Widget w = c.getActiveDraggingObject();
-		if (w == Container.getNothingBeingDragged()) return;
-
-		/** Must be the CardView widget. */
-		CardView cardView = (CardView) w;
-		Card theCard = (Card) cardView.getModelElement();
-		if (theCard == null) {
-			System.err.println ("Idiot::releaseCardController(): somehow CardView model element is null.");
-			return;
-		}
-
-		/** Recover the From Column */
-		Widget fromWidget = c.getDragSource();
-		if (fromWidget == null) {
-			System.err.println ("Idiot::releaseCardController(): somehow fromWidget is null.");
-			return;
-		}
-		Column fromColumn = (Column) fromWidget.getModelElement();
-
-		Pile toPile = (Pile) view.getModelElement();
-
-		// Try to make the move
-		Move m = new MoveCardDownPile (fromColumn, theCard, toPile);
-		if (m.doMove (theGame)) {
-			// Successful move!  
-			// add move to our set of moves
-			theGame.pushMove (m);
-		} else {
-			// Invalid move. Restore dragging widget to source
-			fromWidget.returnWidget (w);
-		}
-
-		c.releaseDraggingObject();    // also releases dragSource
-
-		c.repaint();
-	}
 }
-
-
