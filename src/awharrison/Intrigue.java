@@ -66,47 +66,84 @@ public class Intrigue extends Solitaire {
 		// Game has been initialized, prepare game for play
 		
 		// set indexes for the piles and columns
-		int up, down, tab;
-		up = down = tab = 0;
+		int up, down, tab, count;
+		count = up = down = tab = 0;
 		
 		
 		// draw cards from the deck until all bases are set
 		while(true) {
-			Card temp = multideck.get();
+
+			Pile tempPile = new Pile("temp Pile");
+			Card temp = new Card(1, 1);
+			
+			if(!multideck.empty()) {
+				temp = multideck.get();
+			} else if (!tempPile.empty()){
+				temp = tempPile.get();
+			} else 
+				break;
+			
 			switch(temp.getRank()) {
 			// if a 6 is drawn, set it as an upPile foundation
 			case 6:
 				upPile[up].add(temp);
 				up++;
+				count++;
 				break;
 			// if a 5 is drawn, set it as a downPile foundation
 			case 5:
 				downPile[down].add(temp);
 				down++;
+				count++;
 				break;
 			// if a queen is drawn, set it as a tableau foundation
 			case 12:
 				tableau[tab].add(temp);
 				tab++;
+				count++;
 				break;
 			// if none of the above...
 			default:
-				// if a tableau foundation has been set, place the drawn card on it
-				if(tab > 0) {
-					tableau[tab-1].add(temp);
-				// otherwise return the card to the deck and shuffle with a new seed (no return to bottom of the deck method)
+				// if the card can be placed on an up pile, do so
+				if (up > 0) {
+					for(int i = 0; i < up; i++) {
+						if(temp.getRank() == upPile[up - 1].rank() + 1) {
+							upPile[up - 1].add(temp);
+							count++;
+							break;
+						}
+					}
+				}
+				// if the card can be placed on a down pile do so
+				if (down > 0) {
+					for(int i = 0; i < down; i++) {
+						if(temp.getRank() == downPile[down - 1].rank() - 1) {
+							downPile[up - 1].add(temp);
+							count++;
+							break;
+						} else if ((temp.getRank() == 13) && (downPile[down - 1].rank() == 1)) {
+							downPile[up - 1].add(temp);
+							count++;
+							break;
+						}
+					}
+					
+				}
+				// if a tableau has been set, place the card on the tableau
+				if (tab > 0) {
+					tableau[tab - 1].add(temp);
+				// else set it on a temporary pile to be dealt with at the end
 				} else {
-					multideck.add(temp);
-					multideck.shuffle(getSeed()+1);
+					tempPile.add(temp);
 				}
 				break;
-			}
-			if(!upPile[MAX-1].empty() && !downPile[MAX-1].empty() && !tableau[MAX-1].empty()){
-				break;
+					
+				// otherwise return the card to the deck and shuffle with a new seed (no return to bottom of the deck method)
+				
 			}
 		}
 
-		updateNumberCardsLeft (-3*8);
+		updateNumberCardsLeft (-count);
 		
 	}
 	

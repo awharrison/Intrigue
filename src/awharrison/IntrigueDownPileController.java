@@ -27,11 +27,9 @@ public class IntrigueDownPileController extends MouseAdapter {
 	}
 	
 	
-	public void MouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent e) {
 		/** set the container */
 		Container c = theGame.getContainer();
-
-		System.out.println("Mouse was Released");
 		
 		/** set the dragging object, return if no card being dragged */
 		Widget draggingWidget = c.getActiveDraggingObject();
@@ -68,8 +66,8 @@ public class IntrigueDownPileController extends MouseAdapter {
 			fromWidget.returnWidget (draggingWidget);
 		}
 		
+		/** release object and repaint the game view */
 		c.releaseDraggingObject();    // also releases dragSource
-
 		c.repaint();
 	}
 }

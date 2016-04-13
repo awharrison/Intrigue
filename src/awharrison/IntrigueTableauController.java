@@ -25,7 +25,6 @@ public class IntrigueTableauController extends MouseAdapter {
 		// is responsible for the draggingObject; in our case, this would be a CardView
 		// Widget managing the card we are trying to drag between two piles.
 		Container c = game.getContainer();
-		System.out.println("Mouse was pressed");
 		
 		/** Return if there is no card to be chosen. */
 		Column test = (Column) src.getModelElement();
@@ -65,4 +64,18 @@ public class IntrigueTableauController extends MouseAdapter {
 		// card beneath it.  A bit tricky and I like it!
 		src.redraw();
 	}
+	
+	public void mouseReleased(MouseEvent me) {
+		// if the mouse is released on a column, just return to the widget to its origin
+		Container c = game.getContainer();
+		Widget fromWidget = c.getDragSource();
+		Widget draggingWidget = c.getActiveDraggingObject();
+		fromWidget.returnWidget(draggingWidget);
+		
+		/** release object and repaint the game view */
+		c.releaseDraggingObject();
+		c.repaint();
+		return;
+	}
+	
 }

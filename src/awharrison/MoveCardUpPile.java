@@ -70,6 +70,20 @@ public class MoveCardUpPile extends ks.common.model.Move {
 		// VALIDATION:
 		boolean validation = false;
 		
-		return true;
+		if (to.rank() == 11) {
+			return validation;
+		}
+		
+		if(!to.empty()) {
+			if (to.rank() + 1 == movingCard.getRank()) {
+				validation = true;
+			} 
+		} else if (movingCard.getRank() == 6) {
+			validation = true;
+		} else {
+			validation = false;
+		}
+		
+		return validation;
 	}
 }

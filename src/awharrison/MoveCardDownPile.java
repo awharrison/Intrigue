@@ -39,12 +39,10 @@ public class MoveCardDownPile extends ks.common.model.Move {
 	public boolean doMove (Solitaire theGame) {
 		// VALIDATE:
 		if (valid (theGame) == false) {
-			System.out.println("invalid move");
 			return false;
 		}
 
 		// EXECUTE:
-		System.out.println("valid move");
 		to.add (movingCard);
 
 		return true;
@@ -72,6 +70,22 @@ public class MoveCardDownPile extends ks.common.model.Move {
 		// VALIDATION:
 		boolean validation = false;
 		
-		return true;
+		if (to.rank() == 13) {
+			return validation;
+		}
+		
+		if(!to.empty()) {
+			if (to.rank() - 1 == movingCard.getRank()) { // the card being moved must be 1 value lower than the top of the pile
+				validation = true;
+			} else if ((to.rank() == 1) && (movingCard.getRank() == 13)) { // the above having the exception of a King able to top an Ace
+				validation = true;
+			}
+		} else if (movingCard.getRank() == 5) {
+			validation = true;
+		} else {
+			validation = false;
+		}
+		
+		return validation;
 	}
 }
