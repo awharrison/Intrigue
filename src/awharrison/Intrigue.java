@@ -110,6 +110,7 @@ public class Intrigue extends Solitaire {
 						if(temp.getRank() == upPile[up - 1].rank() + 1) {
 							upPile[up - 1].add(temp);
 							count++;
+							this.updateScore(1);
 							break;
 						}
 					}
@@ -120,10 +121,12 @@ public class Intrigue extends Solitaire {
 						if(temp.getRank() == downPile[down - 1].rank() - 1) {
 							downPile[up - 1].add(temp);
 							count++;
+							this.updateScore(1);
 							break;
 						} else if ((temp.getRank() == 13) && (downPile[down - 1].rank() == 1)) {
 							downPile[up - 1].add(temp);
 							count++;
+							this.updateScore(1);
 							break;
 						}
 					}
@@ -189,6 +192,7 @@ public class Intrigue extends Solitaire {
 	private void initializeView() {
 		// get a card to determine it's height and width
 		CardImages ci = getCardImages();
+		ci.setOverlap(15); // default overlap size was too large
 		// initialize the size of the arrays for the up and down piles as well as the tableau columns
 		upPileView = new PileView[MAX];
 		downPileView = new PileView[MAX];
@@ -197,32 +201,32 @@ public class Intrigue extends Solitaire {
 		// for loop to initialize each individual upPileView 
 		for(int i = 0; i < MAX; i++) {
 			upPileView[i] = new PileView(upPile[i]);
-			upPileView[i].setBounds((i+1)*20 + i*ci.getWidth(), 80, ci.getWidth(), ci.getHeight());
+			upPileView[i].setBounds((i+1)*20 + i*ci.getWidth(), 60, ci.getWidth(), ci.getHeight());
 			addViewWidget(upPileView[i]);
 		}
 		
 		// for loop to initialize each individual downPileView
 		for(int i = 0; i < MAX; i++) {
 			downPileView[i] = new PileView(downPile[i]);
-			downPileView[i].setBounds((i+1)*20 + i*ci.getWidth(), 100 + ci.getHeight(), ci.getWidth(), ci.getHeight());
+			downPileView[i].setBounds((i+1)*20 + i*ci.getWidth(), 70 + ci.getHeight(), ci.getWidth(), ci.getHeight());
 			addViewWidget(downPileView[i]);
 		}
 		
 		// for loop to initialize each individual tableauView
 		for(int i = 0; i < MAX; i++) {
 			tableauView[i] = new ColumnView(tableau[i]);
-			tableauView[i].setBounds((i+1)*20 + i*ci.getWidth(), 120 + 2*ci.getHeight(), ci.getWidth(), 8*ci.getHeight());
+			tableauView[i].setBounds((i+1)*20 + i*ci.getWidth(), 80 + 2*ci.getHeight(), ci.getWidth(), 8*ci.getHeight());
 			addViewWidget(tableauView[i]);
 		}
 		
 		// initialze placement for the game score view
 		scoreView = new IntegerView(getScore());
-		scoreView.setBounds(2*ci.getWidth(), 10, 100, 60);
+		scoreView.setBounds(2*ci.getWidth(), 0, 100, 60);
 		addViewWidget(scoreView);
 		
 		// initialize placement for the number of cards left view
 		numLeftView = new IntegerView(getNumLeft());
-		numLeftView.setBounds(6*ci.getWidth(), 10, 100, 60);
+		numLeftView.setBounds(6*ci.getWidth(), 0, 100, 60);
 		addViewWidget(numLeftView);
 	}
 	

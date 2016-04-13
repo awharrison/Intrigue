@@ -26,9 +26,9 @@ public class IntrigueTableauController extends MouseAdapter {
 		// Widget managing the card we are trying to drag between two piles.
 		Container c = game.getContainer();
 		
-		/** Return if there is no card to be chosen. */
+		/** Return if there is no card to be chosen or the chosen card is a queen. */
 		Column test = (Column) src.getModelElement();
-		if (test.count() == 0) {
+		if ((test.count() == 0) || (test.rank() == 12)) {
 			c.releaseDraggingObject();
 			return;
 		}
@@ -68,8 +68,22 @@ public class IntrigueTableauController extends MouseAdapter {
 	public void mouseReleased(MouseEvent me) {
 		// if the mouse is released on a column, just return to the widget to its origin
 		Container c = game.getContainer();
-		Widget fromWidget = c.getDragSource();
+		
+		/** set the dragging object, return if no card being dragged */
 		Widget draggingWidget = c.getActiveDraggingObject();
+		if (draggingWidget == Container.getNothingBeingDragged()) {
+			System.err.println ("IntrigueUpPileController::mouseReleased() unexpectedly found nothing being dragged.");
+			c.releaseDraggingObject();		
+			return;
+		}
+
+		/** get the from column */
+		Widget fromWidget = c.getDragSource();
+		if (fromWidget == null) {
+			System.err.println ("IntrigueUpPileController::mouseReleased(): somehow no dragSource in container.");
+			c.releaseDraggingObject();
+			return;
+		}
 		fromWidget.returnWidget(draggingWidget);
 		
 		/** release object and repaint the game view */

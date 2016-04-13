@@ -36,15 +36,16 @@ public class MoveCardUpPile extends ks.common.model.Move {
 	 * @param ks.common.game.Solitaire   the game being played.
 	 * @return boolean
 	 */
-	public boolean doMove (Solitaire theGame) {
+	public boolean doMove (Solitaire game) {
 		// VALIDATE:
-		if (valid (theGame) == false) {
+		if (valid (game) == false) {
 			return false;
 		}
 
 		// EXECUTE:
 		to.add (movingCard);
-
+		game.updateScore(1);
+		game.updateNumberCardsLeft(-1);
 		return true;
 	}
 
@@ -58,6 +59,8 @@ public class MoveCardUpPile extends ks.common.model.Move {
 
 		// UNDO: move back
 		from.add (to.get());
+		game.updateScore(-1);
+		game.updateNumberCardsLeft(1);
 		return true;
 	}
 
