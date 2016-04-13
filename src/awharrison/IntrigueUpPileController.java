@@ -14,13 +14,13 @@ import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.Widget;
 
-//public class IntrigueDownPileController extends SolitaireReleasedAdapter {
-public class IntrigueDownPileController extends MouseAdapter {
+//public class IntrigueUpPileController extends SolitaireReleasedAdapter {
+public class IntrigueUpPileController extends MouseAdapter {
 	
 	PileView src;
 	Intrigue theGame;
 	
-	public IntrigueDownPileController(Intrigue theGame, PileView v) {
+	public IntrigueUpPileController(Intrigue theGame, PileView v) {
 		this.theGame = theGame;
 //		super(theGame);
 		this.src = v;
@@ -30,7 +30,6 @@ public class IntrigueDownPileController extends MouseAdapter {
 	public void MouseReleased(MouseEvent e) {
 		/** set the container */
 		Container c = theGame.getContainer();
-
 		System.out.println("Mouse was Released");
 		
 		/** set the dragging object, return if no card being dragged */
@@ -61,7 +60,7 @@ public class IntrigueDownPileController extends MouseAdapter {
 		Card cardBeingMoved = (Card) cardBeingMovedView.getModelElement();
 		
 		/** perform move */
-		Move move = new MoveCardDownPile(fromColumn, cardBeingMoved, toPile);
+		Move move = new MoveCardUpPile(fromColumn, cardBeingMoved, toPile);
 		if (move.doMove(theGame)) {
 			theGame.pushMove (move);     // Successful Move has been Move
 		} else {
@@ -73,5 +72,4 @@ public class IntrigueDownPileController extends MouseAdapter {
 		c.repaint();
 	}
 }
-
 

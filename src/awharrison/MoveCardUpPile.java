@@ -69,14 +69,7 @@ public class MoveCardUpPile extends ks.common.model.Move {
 	public boolean valid (Solitaire game) {
 		// VALIDATION:
 		boolean validation = false;
-
-		// Make sure not empty!
-		if (to.count() == 0) { return false; }
 		
-		// Make sure same rank and to left of...
-		if ((to.rank() + 1) == movingCard.getRank()) {
-			validation = true;
-		}
-		return validation;
+		return true;
 	}
 }

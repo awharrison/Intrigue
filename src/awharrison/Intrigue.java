@@ -3,6 +3,8 @@ package awharrison;
 import java.awt.Dimension;
 
 import ks.client.gamefactory.GameWindow;
+import ks.common.controller.SolitaireMouseMotionAdapter;
+import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
 import ks.common.model.Card;
 import ks.common.model.Column;
@@ -123,16 +125,25 @@ public class Intrigue extends Solitaire {
 		// initialize adapters for each tableau column
 		for (int i = 0; i < MAX; i++) {
 			tableauView[i].setMouseAdapter(new IntrigueTableauController (this, tableauView[i]));
+			tableauView[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
 		}
 		
 		// initialize adapters for each upPile
+		for (int i = 0; i < MAX; i++) {
+			upPileView[i].setMouseAdapter(new IntrigueUpPileController (this, upPileView[i]));
+			upPileView[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
+		}
 		
 		// initialize adapters for each downPile
 		for (int i = 0; i < MAX; i++) {
 			downPileView[i].setMouseAdapter(new IntrigueDownPileController (this, downPileView[i]));
+			downPileView[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
 		}
 		
 		// initialize adapters for updating the number of cards left and the score
+		
+		getContainer().setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
+		getContainer().setMouseAdapter (new SolitaireReleasedAdapter(this));
 	}
 	
 	/**

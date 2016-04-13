@@ -1,39 +1,41 @@
 package awharrison;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.model.Column;
 import ks.common.view.CardView;
 import ks.common.view.ColumnView;
 import ks.common.view.Container;
 import ks.common.view.Widget;
 
-public class IntrigueTableauController extends SolitaireReleasedAdapter {
+public class IntrigueTableauController extends MouseAdapter {
 	
-	ColumnView view;
+	ColumnView src;
+	Intrigue game;
+	
 	
 	public IntrigueTableauController(Intrigue g, ColumnView v) {
-		super(g);
-		this.view = v;
+		this.game = g;
+		this.src = v;
 	}
 	
 	public void mousePressed(MouseEvent me) {
 		// The container manages several critical pieces of information; namely, it
 		// is responsible for the draggingObject; in our case, this would be a CardView
 		// Widget managing the card we are trying to drag between two piles.
-		Container c = theGame.getContainer();
+		Container c = game.getContainer();
+		System.out.println("Mouse was pressed");
 		
 		/** Return if there is no card to be chosen. */
-		Column test = (Column) view.getModelElement();
+		Column test = (Column) src.getModelElement();
 		if (test.count() == 0) {
 			c.releaseDraggingObject();
 			return;
 		}
 	
-		// Get a card to move from PileView. Note: this returns a CardView.
-		// Note that this method will alter the model for BuildablePileView if the condition is met.
-		CardView cardView = view.getCardViewForTopCard (me);
+		// get the top card from the source column 
+		CardView cardView = src.getCardViewForTopCard (me);
 		
 		// an invalid selection of some sort.
 		if (cardView == null) {
@@ -46,7 +48,7 @@ public class IntrigueTableauController extends SolitaireReleasedAdapter {
 		// cardView widget reflect the original card location on the screen.
 		Widget w = c.getActiveDraggingObject();
 		if (w != Container.getNothingBeingDragged()) {
-			System.err.println ("WastePileController::mousePressed(): Unexpectedly encountered a Dragging Object during a Mouse press.");
+			System.err.println ("Intrigue::mousePressed(): Unexpectedly encountered a Dragging Object during a Mouse press.");
 			return;
 		}
 	
@@ -54,13 +56,13 @@ public class IntrigueTableauController extends SolitaireReleasedAdapter {
 		c.setActiveDraggingObject (cardView, me);
 		
 		// Tell container which source widget initiated the drag
-		c.setDragSource (view);
+		c.setDragSource (src);
 	
 		// The only widget that could have changed is ourselves. If we called refresh, there
 		// would be a flicker, because the dragged widget would not be redrawn. We simply
 		// force the WastePile's image to be updated, but nothing is refreshed on the screen.
 		// This is patently OK because the card has not yet been dragged away to reveal the
 		// card beneath it.  A bit tricky and I like it!
-		view.redraw();
+		src.redraw();
 	}
 }

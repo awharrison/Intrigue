@@ -39,10 +39,12 @@ public class MoveCardDownPile extends ks.common.model.Move {
 	public boolean doMove (Solitaire theGame) {
 		// VALIDATE:
 		if (valid (theGame) == false) {
+			System.out.println("invalid move");
 			return false;
 		}
 
 		// EXECUTE:
+		System.out.println("valid move");
 		to.add (movingCard);
 
 		return true;
@@ -69,14 +71,7 @@ public class MoveCardDownPile extends ks.common.model.Move {
 	public boolean valid (Solitaire game) {
 		// VALIDATION:
 		boolean validation = false;
-
-		// Make sure not empty!
-		if (to.count() == 0) { return false; }
 		
-		// Make sure same rank and to left of...
-		if ((to.rank() - 1) == movingCard.getRank()) {
-			validation = true;
-		}
-		return validation;
+		return true;
 	}
 }
