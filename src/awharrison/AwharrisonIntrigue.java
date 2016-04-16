@@ -276,7 +276,7 @@ public class AwharrisonIntrigue extends Solitaire {
 	
 	public static void main (String []args) {
 		// Seed is to ensure we get the same initial cards every time.
-		GameWindow gw = IntrigueLauncher.generateWindow(new AwharrisonIntrigue(), 11230);
+		GameWindow gw = IntrigueLauncher.generateWindow(new AwharrisonIntrigue(), 50);
 		gw.setVisible(true);
 	}
 }
