@@ -6,6 +6,7 @@ import ks.client.gamefactory.GameWindow;
 import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
+import ks.common.games.SolitaireUndoAdapter;
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.MultiDeck;
@@ -25,13 +26,13 @@ public class Intrigue extends Solitaire {
 	 * Game attributes and views
 	 */
 	MultiDeck multideck;
-	Pile upPile[];
-	Pile downPile[];
-	Column tableau[];
+	Pile upPile[] = new Pile[MAX];
+	Pile downPile[] = new Pile[MAX];
+	Column tableau[] = new Column[MAX];
 	
-	PileView upPileView[];
-	PileView downPileView[];
-	ColumnView tableauView[];
+	PileView upPileView[] = new PileView[MAX];
+	PileView downPileView[] = new PileView[MAX];
+	ColumnView tableauView[] = new ColumnView[MAX];
 	
 	IntegerView scoreView;
 	IntegerView numLeftView;
@@ -68,20 +69,14 @@ public class Intrigue extends Solitaire {
 		// set indexes for the piles and columns
 		int up, down, tab, count;
 		count = up = down = tab = 0;
+
+		Card temp = multideck.get();
+		Pile tempPile = new Pile("temp Pile");
+		boolean loop = true;
 		
 		
 		// draw cards from the deck until all bases are set
-		while(true) {
-
-			Pile tempPile = new Pile("temp Pile");
-			Card temp = new Card(1, 1);
-			
-			if(!multideck.empty()) {
-				temp = multideck.get();
-			} else if (!tempPile.empty()){
-				temp = tempPile.get();
-			} else 
-				break;
+		while(loop) {
 			
 			switch(temp.getRank()) {
 			// if a 6 is drawn, set it as an upPile foundation
@@ -104,6 +99,8 @@ public class Intrigue extends Solitaire {
 				break;
 			// if none of the above...
 			default:
+				// flag for pile placement 
+				int placed = 0;
 				// if the card can be placed on an up pile, do so
 				if (up > 0) {
 					for(int i = 0; i < up; i++) {
@@ -111,6 +108,7 @@ public class Intrigue extends Solitaire {
 							upPile[up - 1].add(temp);
 							count++;
 							this.updateScore(1);
+							placed = 1;
 							break;
 						}
 					}
@@ -119,35 +117,43 @@ public class Intrigue extends Solitaire {
 				if (down > 0) {
 					for(int i = 0; i < down; i++) {
 						if(temp.getRank() == downPile[down - 1].rank() - 1) {
-							downPile[up - 1].add(temp);
+							downPile[down - 1].add(temp);
 							count++;
 							this.updateScore(1);
+							placed = 1;
 							break;
 						} else if ((temp.getRank() == 13) && (downPile[down - 1].rank() == 1)) {
-							downPile[up - 1].add(temp);
+							downPile[down - 1].add(temp);
 							count++;
 							this.updateScore(1);
+							placed = 1;
 							break;
 						}
 					}
 					
 				}
 				// if a tableau has been set, place the card on the tableau
-				if (tab > 0) {
-					tableau[tab - 1].add(temp);
-				// else set it on a temporary pile to be dealt with at the end
-				} else {
-					tempPile.add(temp);
+				if (placed == 0) {
+					if (tab > 0) {
+						tableau[tab - 1].add(temp);
+					// else set it on a temporary pile to be dealt with at the end
+					} else {
+						tempPile.add(temp);
+					}
 				}
 				break;
 					
 				// otherwise return the card to the deck and shuffle with a new seed (no return to bottom of the deck method)
-				
 			}
+			// terminate loop if there are no cards left to place
+			if(!multideck.empty()) {
+				temp = multideck.get();
+			} else if (!tempPile.empty()){
+				temp = tempPile.get();
+			} else 
+				loop = false;
 		}
-
 		updateNumberCardsLeft (-count);
-		
 	}
 	
 	/**
@@ -166,24 +172,27 @@ public class Intrigue extends Solitaire {
 		for (int i = 0; i < MAX; i++) {
 			tableauView[i].setMouseAdapter(new IntrigueTableauController (this, tableauView[i]));
 			tableauView[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
+			tableauView[i].setUndoAdapter(new SolitaireUndoAdapter(this));
 		}
 		
 		// initialize adapters for each upPile
 		for (int i = 0; i < MAX; i++) {
 			upPileView[i].setMouseAdapter(new IntrigueUpPileController (this, upPileView[i]));
 			upPileView[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
+			upPileView[i].setUndoAdapter(new SolitaireUndoAdapter(this));
 		}
 		
 		// initialize adapters for each downPile
 		for (int i = 0; i < MAX; i++) {
 			downPileView[i].setMouseAdapter(new IntrigueDownPileController (this, downPileView[i]));
 			downPileView[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
+			downPileView[i].setUndoAdapter(new SolitaireUndoAdapter(this));
 		}
 		
-		// initialize adapters for updating the number of cards left and the score
-		
+		// initialize adapters for the container
 		getContainer().setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
 		getContainer().setMouseAdapter (new SolitaireReleasedAdapter(this));
+		getContainer().setUndoAdapter(new SolitaireUndoAdapter(this));
 	}
 	
 	/**
@@ -193,10 +202,6 @@ public class Intrigue extends Solitaire {
 		// get a card to determine it's height and width
 		CardImages ci = getCardImages();
 		ci.setOverlap(15); // default overlap size was too large
-		// initialize the size of the arrays for the up and down piles as well as the tableau columns
-		upPileView = new PileView[MAX];
-		downPileView = new PileView[MAX];
-		tableauView = new ColumnView[MAX];
 		
 		// for loop to initialize each individual upPileView 
 		for(int i = 0; i < MAX; i++) {
@@ -237,11 +242,6 @@ public class Intrigue extends Solitaire {
 		// initialize the multideck and add it to the game
 		multideck.create(seed);
 		addModelElement(multideck);
-		
-		// create the pile and tableau column models
-		upPile = new Pile[MAX];
-		downPile = new Pile[MAX];
-		tableau = new Column[MAX];
 		
 		// initialize and add the upPile models to the game
 		for(int i = 0; i < MAX; i++) {

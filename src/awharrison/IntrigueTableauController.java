@@ -3,7 +3,9 @@ package awharrison;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import ks.common.model.Card;
 import ks.common.model.Column;
+import ks.common.model.Move;
 import ks.common.view.CardView;
 import ks.common.view.ColumnView;
 import ks.common.view.Container;
@@ -84,7 +86,25 @@ public class IntrigueTableauController extends MouseAdapter {
 			c.releaseDraggingObject();
 			return;
 		}
-		fromWidget.returnWidget(draggingWidget);
+		
+		/** determine the toColumn */
+		Column toColumn = (Column) src.getModelElement();
+		
+		/** set fromColumn */
+		ColumnView fromColumnView = (ColumnView) fromWidget;
+		Column fromColumn = (Column) fromColumnView.getModelElement();
+		
+		/** set card being moved */
+		CardView cardBeingMovedView = (CardView) draggingWidget;
+		Card cardBeingMoved = (Card) cardBeingMovedView.getModelElement();
+		
+		/** perform move */
+		Move move = new MoveTableauToTableau(fromColumn, cardBeingMoved, toColumn);
+		if (move.doMove(game)) {
+			game.pushMove (move);     // Successful Move has been Move
+		} else {
+			fromWidget.returnWidget (draggingWidget);
+		}
 		
 		/** release object and repaint the game view */
 		c.releaseDraggingObject();
