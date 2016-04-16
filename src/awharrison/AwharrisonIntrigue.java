@@ -16,7 +16,7 @@ import ks.common.view.ColumnView;
 import ks.common.view.IntegerView;
 import ks.common.view.PileView;
 
-public class Intrigue extends Solitaire {
+public class AwharrisonIntrigue extends Solitaire {
 	/**
 	 * this determines the number of piles and columns, Intrigue has 8 of each
 	 */
@@ -276,7 +276,7 @@ public class Intrigue extends Solitaire {
 	
 	public static void main (String []args) {
 		// Seed is to ensure we get the same initial cards every time.
-		GameWindow gw = IntrigueMain.generateWindow(new Intrigue(), 11230);
+		GameWindow gw = IntrigueLauncher.generateWindow(new AwharrisonIntrigue(), 11230);
 		gw.setVisible(true);
 	}
 }

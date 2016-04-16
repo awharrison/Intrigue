@@ -5,13 +5,13 @@ import ks.tests.KSTestCase;
 
 public class TestIntrigue extends KSTestCase{
 	
-	Intrigue game;
+	AwharrisonIntrigue game;
 	GameWindow gw;
 	
 	@Override
 	public void setUp() {
-		game = new Intrigue();
-		gw = IntrigueMain.generateWindow(game, 11230);
+		game = new AwharrisonIntrigue();
+		gw = IntrigueLauncher.generateWindow(game, 11230);
 	}
 	
 	protected void tearDown() {

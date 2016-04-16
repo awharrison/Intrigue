@@ -10,14 +10,14 @@ import ks.common.model.Pile;
 public class TestMoves extends KSTestCase {
 	Column tab1, tab2;
 	Pile up1, up2, down1, down2;
-	Intrigue game;
+	AwharrisonIntrigue game;
 	GameWindow gw;
 	Card movingCard;
 	
 	@Override 
 	protected void setUp() {
-		game = new Intrigue();
-		gw = IntrigueMain.generateWindow(game, MultiDeck.OrderBySuit);
+		game = new AwharrisonIntrigue();
+		gw = IntrigueLauncher.generateWindow(game, MultiDeck.OrderBySuit);
 	}
 	
 	@Override

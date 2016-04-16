@@ -7,7 +7,7 @@ import ks.client.gamefactory.GameWindow;
 import ks.common.games.Solitaire;
 import ks.common.games.SolvableSolitaire;
 
-public class IntrigueMain {
+public class IntrigueLauncher {
 	
 	/** Temporary function to be able to launch Solitaire window. */
 	public static GameWindow generateWindow(Solitaire theGame, int seed) {
