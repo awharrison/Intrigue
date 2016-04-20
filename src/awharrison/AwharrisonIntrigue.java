@@ -220,7 +220,7 @@ public class AwharrisonIntrigue extends Solitaire {
 		// for loop to initialize each individual tableauView
 		for(int i = 0; i < MAX; i++) {
 			tableauView[i] = new ColumnView(tableau[i]);
-			tableauView[i].setBounds((i+1)*20 + i*ci.getWidth(), 80 + 2*ci.getHeight(), ci.getWidth(), 8*ci.getHeight());
+			tableauView[i].setBounds((i+1)*20 + i*ci.getWidth(), 80 + 2*ci.getHeight(), ci.getWidth(), 20*ci.getHeight());
 			addViewWidget(tableauView[i]);
 		}
 		
@@ -273,6 +273,8 @@ public class AwharrisonIntrigue extends Solitaire {
 		score.setValue(0);
 		
 	}
+	
+	public String getDeckType() {return "tiny";}
 	
 	public static void main (String []args) {
 		// Seed is to ensure we get the same initial cards every time.
