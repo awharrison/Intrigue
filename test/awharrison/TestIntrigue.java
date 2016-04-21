@@ -11,12 +11,12 @@ import ks.tests.KSTestCase;
 
 public class TestIntrigue extends KSTestCase{
 	
-	AwharrisonIntrigue game;
+	Awharrison_Intrigue game;
 	GameWindow gw;
 	
 	@Override
 	public void setUp() {
-		game = new AwharrisonIntrigue();
+		game = new Awharrison_Intrigue();
 		gw = IntrigueLauncher.generateWindow(game, 50);
 	}
 	

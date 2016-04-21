@@ -18,9 +18,9 @@ import ks.common.view.Widget;
 public class IntrigueUpPileController extends MouseAdapter {
 	
 	PileView src;
-	AwharrisonIntrigue theGame;
+	Awharrison_Intrigue theGame;
 	
-	public IntrigueUpPileController(AwharrisonIntrigue theGame, PileView v) {
+	public IntrigueUpPileController(Awharrison_Intrigue theGame, PileView v) {
 		this.theGame = theGame;
 //		super(theGame);
 		this.src = v;

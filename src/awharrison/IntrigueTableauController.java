@@ -14,10 +14,10 @@ import ks.common.view.Widget;
 public class IntrigueTableauController extends MouseAdapter {
 	
 	ColumnView src;
-	AwharrisonIntrigue game;
+	Awharrison_Intrigue game;
 	
 	
-	public IntrigueTableauController(AwharrisonIntrigue g, ColumnView v) {
+	public IntrigueTableauController(Awharrison_Intrigue g, ColumnView v) {
 		this.game = g;
 		this.src = v;
 	}
